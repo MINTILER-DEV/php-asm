@@ -1,0 +1,41 @@
+PUSH 10
+STORE 0
+PUSH 20
+STORE 1
+LOAD 0
+LOAD 1
+LT
+JZ else0
+PUSHC "a < b"
+PRINT
+JMP endif1
+else0:
+endif1:
+LOAD 0
+LOAD 1
+LTE
+JZ else2
+PUSHC ", a <= b"
+PRINT
+JMP endif3
+else2:
+endif3:
+LOAD 1
+LOAD 0
+GT
+JZ else4
+PUSHC ", b > a"
+PRINT
+JMP endif5
+else4:
+endif5:
+LOAD 0
+LOAD 0
+EQ
+JZ else6
+PUSHC ", a == a"
+PRINT
+JMP endif7
+else6:
+endif7:
+HALT

@@ -1,0 +1,32 @@
+PUSH 75
+STORE 0
+LOAD 0
+PUSH 90
+GTE
+JZ else0
+PUSHC "Grade: A"
+PRINT
+JMP endif1
+else0:
+LOAD 0
+PUSH 80
+GTE
+JZ else2
+PUSHC "Grade: B"
+PRINT
+JMP endif3
+else2:
+LOAD 0
+PUSH 70
+GTE
+JZ else4
+PUSHC "Grade: C"
+PRINT
+JMP endif5
+else4:
+PUSHC "Grade: F"
+PRINT
+endif5:
+endif3:
+endif1:
+HALT

@@ -1,0 +1,69 @@
+PUSH 0
+PUSHC "database"
+NEWARR
+STORE 998
+LOAD 998
+PUSHC "host"
+PUSHC "localhost"
+ASET
+LOAD 998
+PUSHC "port"
+PUSH 5432
+ASET
+LOAD 998
+PUSHC "enabled"
+PUSH 1
+ASET
+LOAD 998
+ASET
+PUSH 0
+PUSHC "cache"
+NEWARR
+STORE 998
+LOAD 998
+PUSHC "ttl"
+PUSH 3600
+ASET
+LOAD 998
+PUSHC "enabled"
+PUSH 1
+ASET
+LOAD 998
+ASET
+PUSHC "production"
+STORE 1
+LOAD 1
+PUSHC "development"
+EQ
+JZ else0
+PUSHC "Running in development mode"
+PRINT
+JMP endif1
+else0:
+LOAD 1
+PUSHC "production"
+EQ
+JZ else2
+PUSHC "Database: "
+PRINT
+LOAD 0
+PUSHC "database"
+AGET
+PUSHC "host"
+AGET
+PRINT
+PUSHC ":"
+PRINT
+LOAD 0
+PUSHC "database"
+AGET
+PUSHC "port"
+AGET
+PRINT
+JMP endif3
+else2:
+PUSHC "Unknown environment"
+PRINT
+endif3:
+endif1:
+HALT

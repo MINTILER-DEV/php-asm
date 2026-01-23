@@ -1,0 +1,10 @@
+JMP main1
+func_test0:
+PUSH 1
+PUSH 2
+ADD
+RET
+main1:
+CALL func_test0
+PRINT
+HALT

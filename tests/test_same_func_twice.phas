@@ -1,0 +1,15 @@
+JMP main1
+func_f0:
+STORE 100
+LOAD 100
+PUSH 1
+SUB
+CALL func_f0
+PUSH 1
+SUB
+RET
+main1:
+PUSH 5
+CALL func_f0
+PRINT
+HALT
