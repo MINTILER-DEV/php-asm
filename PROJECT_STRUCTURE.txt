@@ -68,7 +68,6 @@ D:\General\Projects\PHP\php-asm\
 │
 ├── 📄 README.md                         # Main project README
 ├── 📄 MODULAR_README.md                 # 🌟 Architecture guide
-├── 📄 REFACTORING_SUMMARY.md            # 🌟 What changed
 ├── 📄 DEVELOPER_GUIDE.md                # 🌟 How to contribute
 ├── 📄 COMPLETION_REPORT.md              # 🌟 Final summary
 └── 📄 PROJECT_STRUCTURE.txt             # This file!
@@ -82,7 +81,7 @@ D:\General\Projects\PHP\php-asm\
 - **Assembler Modules**: 1 file
 - **VM Modules**: 5 files
 - **Entry Points**: 5 files
-- **Documentation**: 5 files
+- **Documentation**: 4 files
 - **Examples**: 11 files
 - **Tests**: 15+ files
 
@@ -102,11 +101,9 @@ D:\General\Projects\PHP\php-asm\
 ### For Users
 - **Quick Start**: `src/phc-new.php`
 - **Architecture**: `MODULAR_README.md`
-- **Migration**: `MIGRATION_GUIDE.md`
 
 ### For Developers
 - **Contributing**: `DEVELOPER_GUIDE.md`
-- **Changes**: `REFACTORING_SUMMARY.md`
 - **Examples**: `examples/` directory
 - **Tests**: `tests/` directory
 
@@ -147,7 +144,6 @@ D:\General\Projects\PHP\php-asm\
 
 ### Developer Documentation
 - `DEVELOPER_GUIDE.md` - Contributing guide
-- `REFACTORING_SUMMARY.md` - What changed and why
 - `COMPLETION_REPORT.md` - Final summary
 - Inline code comments throughout
 
