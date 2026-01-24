@@ -20,7 +20,7 @@ src/
 ├── Compiler/ (6 focused modules)
 ├── Assembler/ (clean assembler)
 ├── VM/ (5 VM components)
-└── phc-new.php (unified CLI)
+└── phc.php (unified CLI)
 ```
 
 ## Command Changes
@@ -40,15 +40,15 @@ php src/phc.php run output.phc
 ### New Commands (Backward Compatible)
 ```bash
 # Same commands work!
-php src/phc-new.php compile input.php output.phas
-php src/phc-new.php assemble output.phas output.phc
-php src/phc-new.php run output.phc
+php src/phc.php compile input.php output.phas
+php src/phc.php assemble output.phas output.phc
+php src/phc.php run output.phc
 
 # NEW: One-step execution
-php src/phc-new.php exec input.php
+php src/phc.php exec input.php
 
 # NEW: Compile + assemble
-php src/phc-new.php build input.php
+php src/phc.php build input.php
 ```
 
 ## API Changes (For Developers)
