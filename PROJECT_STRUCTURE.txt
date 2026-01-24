@@ -68,7 +68,6 @@ D:\General\Projects\PHP\php-asm\
 │
 ├── 📄 README.md                         # Main project README
 ├── 📄 MODULAR_README.md                 # 🌟 Architecture guide
-├── 📄 MIGRATION_GUIDE.md                # 🌟 Migration guide
 ├── 📄 REFACTORING_SUMMARY.md            # 🌟 What changed
 ├── 📄 DEVELOPER_GUIDE.md                # 🌟 How to contribute
 ├── 📄 COMPLETION_REPORT.md              # 🌟 Final summary
@@ -83,7 +82,7 @@ D:\General\Projects\PHP\php-asm\
 - **Assembler Modules**: 1 file
 - **VM Modules**: 5 files
 - **Entry Points**: 5 files
-- **Documentation**: 6 files
+- **Documentation**: 5 files
 - **Examples**: 11 files
 - **Tests**: 15+ files
 
@@ -144,7 +143,6 @@ D:\General\Projects\PHP\php-asm\
 ### User Documentation
 - `README.md` - Main project overview
 - `MODULAR_README.md` - New architecture guide
-- `MIGRATION_GUIDE.md` - How to transition
 - `tests/README.md` - Test documentation
 
 ### Developer Documentation
@@ -157,18 +155,18 @@ D:\General\Projects\PHP\php-asm\
 
 ```bash
 # Compile, assemble, and run in one step
-php src/phc-new.php exec examples/01_hello_world.php
+php src/phc.php exec examples/01_hello_world.php
 
 # Build (compile + assemble)
 php src/phc-new.php build test.php
 
 # Individual steps
-php src/phc-new.php compile test.php test.phas
-php src/phc-new.php assemble test.phas test.phc
-php src/phc-new.php run test.phc
+php src/phc.php compile test.php test.phas
+php src/phc.php assemble test.phas test.phc
+php src/phc.php run test.phc
 
 # With verbose output
-php src/phc-new.php exec test.php --verbose
+php src/phc.php exec test.php --verbose
 
 # Run all tests
 cd tests && php run_all_tests.php
