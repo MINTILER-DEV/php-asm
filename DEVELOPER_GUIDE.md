@@ -19,6 +19,7 @@ PHP Code → Compiler → Assembly → Assembler → Bytecode → VM → Output
 ### Key Modules
 
 #### Compiler (`src/Compiler/`)
+
 - **ExpressionParser.php** - Parses expressions with proper precedence
 - **StatementCompiler.php** - Compiles statements (if, while, for, etc.)
 - **FunctionCompiler.php** - Handles user-defined functions
@@ -27,6 +28,7 @@ PHP Code → Compiler → Assembly → Assembler → Bytecode → VM → Output
 - **VariableResolver.php** - Maps variables to memory
 
 #### VM (`src/VM/`)
+
 - **PHCVM.php** - Main execution loop
 - **Stack.php** - Stack operations
 - **Memory.php** - Memory and array management
@@ -34,6 +36,7 @@ PHP Code → Compiler → Assembly → Assembler → Bytecode → VM → Output
 - **BytecodeLoader.php** - Loads `.phc` files
 
 #### Shared (`src/`)
+
 - **Opcodes.php** - Opcode definitions
 - **BuiltinFunctions.php** - Built-in function registry
 - **MemoryLayout.php** - Memory layout configuration
@@ -43,13 +46,15 @@ PHP Code → Compiler → Assembly → Assembler → Bytecode → VM → Output
 ### Adding a New Opcode
 
 1. **Define the opcode** (`Opcodes.php`):
+
 ```php
 class Opcodes {
     const MY_OP = 0x20;  // Pick next available number
 }
 ```
 
-2. **Update the map** (`Opcodes.php`):
+1. **Update the map** (`Opcodes.php`):
+
 ```php
 public static function getOpcodeMap() {
     return [
@@ -59,12 +64,14 @@ public static function getOpcodeMap() {
 }
 ```
 
-3. **Emit it from compiler** (`Compiler/ExpressionParser.php` or `StatementCompiler.php`):
+1. **Emit it from compiler** (`Compiler/ExpressionParser.php` or `StatementCompiler.php`):
+
 ```php
 $this->emitter->emit('MY_OP', $operand);
 ```
 
-4. **Handle it in VM** (`VM/PHCVM.php`):
+1. **Handle it in VM** (`VM/PHCVM.php`):
+
 ```php
 case Opcodes::MY_OP:
     $operand = $this->bytecode[$this->ip++];
@@ -75,6 +82,7 @@ case Opcodes::MY_OP:
 ### Adding a Built-in Function
 
 1. **Register the function** (`BuiltinFunctions.php`):
+
 ```php
 private static $functions = [
     // ...
@@ -82,7 +90,8 @@ private static $functions = [
 ];
 ```
 
-2. **Implement it** (`VM/SyscallHandler.php`):
+1. **Implement it** (`VM/SyscallHandler.php`):
+
 ```php
 public function call($syscallId, $args) {
     switch ($syscallId) {
@@ -99,7 +108,8 @@ private function my_func_($args) {
 }
 ```
 
-3. **Test it**:
+1. **Test it**:
+
 ```php
 <?php
 echo my_func(123);
@@ -108,6 +118,7 @@ echo my_func(123);
 ### Adding a New Statement Type
 
 1. **Add to StatementCompiler** (`Compiler/StatementCompiler.php`):
+
 ```php
 public function parseStatements($code) {
     // ...
@@ -141,6 +152,7 @@ To add a new operator:
 
 1. **Find the right precedence level**
 2. **Add to the appropriate parse method**:
+
 ```php
 private function parseAddSub($tokens, $start, $end) {
     $this->parseConcat($tokens, $start, $end);
@@ -158,6 +170,7 @@ private function parseAddSub($tokens, $start, $end) {
 ## 🧪 Testing Your Changes
 
 ### Quick Test
+
 ```bash
 # Create a test file
 echo '<?php echo 1 + 2;' > test.php
@@ -167,12 +180,14 @@ php src/phc-new.php exec test.php
 ```
 
 ### Run Existing Tests
+
 ```bash
 cd tests
 php run_all_tests.php
 ```
 
 ### Add a New Test
+
 ```bash
 # 1. Create test file
 echo '<?php /* your test */' > tests/test_my_feature.php
@@ -187,11 +202,13 @@ php src/phc-new.php exec tests/test_my_feature.php
 ## 🐛 Debugging
 
 ### Enable Verbose Mode
+
 ```bash
 php src/phc-new.php exec test.php --verbose
 ```
 
 ### Inspect Assembly
+
 ```bash
 # Compile to assembly
 php src/phc-new.php compile test.php test.phas
@@ -201,6 +218,7 @@ cat test.phas
 ```
 
 ### Inspect Bytecode
+
 ```bash
 # Assemble to bytecode
 php src/phc-new.php assemble test.phas test.phc
@@ -210,6 +228,7 @@ hexdump -C test.phc
 ```
 
 ### Add Debug Output
+
 ```php
 // In any module
 echo "DEBUG: Variable = " . var_export($variable, true) . "\n";
@@ -218,6 +237,7 @@ echo "DEBUG: Variable = " . var_export($variable, true) . "\n";
 ## 📝 Code Style
 
 ### Naming Conventions
+
 - Classes: `PascalCase`
 - Methods: `camelCase`
 - Private methods: `camelCase` or `camelCase_` (for syscalls)
@@ -225,11 +245,13 @@ echo "DEBUG: Variable = " . var_export($variable, true) . "\n";
 - Variables: `camelCase` or `$snake_case`
 
 ### Documentation
+
 - Add docblocks to classes
 - Comment complex logic
 - Explain "why", not "what"
 
 ### File Organization
+
 - One class per file
 - Filename matches class name
 - Group related functionality
@@ -237,18 +259,21 @@ echo "DEBUG: Variable = " . var_export($variable, true) . "\n";
 ## 🎓 Learning Path
 
 ### Beginner
+
 1. Read `MODULAR_README.md`
 2. Run examples in `examples/`
 3. Trace execution with verbose mode
 4. Add a simple built-in function
 
 ### Intermediate
+
 1. Study `ExpressionParser.php`
 2. Add a new statement type
 3. Add a new opcode
 4. Write comprehensive tests
 
 ### Advanced
+
 1. Optimize bytecode generation
 2. Add variable scoping
 3. Implement classes/objects
@@ -257,7 +282,9 @@ echo "DEBUG: Variable = " . var_export($variable, true) . "\n";
 ## 🔍 Common Pitfalls
 
 ### 1. Forgetting to Update Assembly in phc-new.php
+
 **Problem**: You use `PHPAssembler` instead of `PHCAssembler`
+
 ```php
 // Wrong
 $assembler = new PHPAssembler();
@@ -267,7 +294,9 @@ $assembler = new PHCAssembler();
 ```
 
 ### 2. Not Handling Array IDs
+
 **Problem**: Confusing array IDs (≥1000) with memory addresses (<1000)
+
 ```php
 // Check first
 if ($this->memory->isArray($value)) {
@@ -276,11 +305,14 @@ if ($this->memory->isArray($value)) {
 ```
 
 ### 3. Incorrect Operator Precedence
+
 **Problem**: Adding operators at wrong precedence level
 **Solution**: Follow math rules: `*/%` before `+-`, `+-` before comparisons
 
 ### 4. Forgetting to Pop Arguments
+
 **Problem**: Stack grows unbounded
+
 ```php
 // After using values, pop them
 $b = $this->stack->pop();
@@ -291,6 +323,7 @@ $this->stack->push($a + $b);
 ## 🚀 Quick Reference
 
 ### Emit Assembly
+
 ```php
 $this->emitter->emit('PUSH', 42);
 $this->emitter->emit('ADD');
@@ -298,18 +331,21 @@ $this->emitter->emitLabel('loop');
 ```
 
 ### VM Stack Operations
+
 ```php
 $this->stack->push($value);
 $value = $this->stack->pop();
 ```
 
 ### Memory Operations
+
 ```php
 $this->memory->store($address, $value);
 $value = $this->memory->load($address);
 ```
 
 ### Array Operations
+
 ```php
 $arrayId = $this->memory->createArray();
 $this->memory->arraySet($arrayId, $key, $value);
@@ -326,18 +362,21 @@ $value = $this->memory->arrayGet($arrayId, $key);
 ## 🎯 Project Ideas
 
 ### Easy
+
 - Add more built-in string functions
 - Add more built-in array functions
 - Improve error messages
 - Add more examples
 
 ### Medium
+
 - Add support for `switch` statements
 - Add support for `do-while` loops
 - Add support for ternary operator `? :`
 - Add variable scoping
 
 ### Hard
+
 - Add class/object support
 - Add exception handling
 - Add optimization passes
@@ -345,7 +384,7 @@ $value = $this->memory->arrayGet($arrayId, $key);
 
 ## 📚 Resources
 
-- **PHP Manual**: https://www.php.net/manual/
+- **PHP Manual**: <https://www.php.net/manual/>
 - **Compiler Theory**: Dragon Book (classic reference)
 - **VM Design**: Crafting Interpreters (free online)
 - **Project Docs**: Start with `MODULAR_README.md`

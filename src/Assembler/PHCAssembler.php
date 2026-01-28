@@ -50,7 +50,7 @@ class PHCAssembler {
         $finalBytecode = $this->packBytecode($bytecode);
         file_put_contents($outputFile, $finalBytecode);
         
-        echo "Assembled successfully: $outputFile (" . strlen($finalBytecode) . " bytes)\n";
+        # echo "Assembled successfully: $outputFile (" . strlen($finalBytecode) . " bytes)\n";
         return true;
     }
 

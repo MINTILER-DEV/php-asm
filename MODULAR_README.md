@@ -40,11 +40,13 @@ src/
 ## 🚀 Quick Start
 
 ### Compile, Assemble, and Run (One Command)
+
 ```bash
 php src/phc-new.php exec tests/test_fib_simple.php
 ```
 
 ### Step by Step
+
 ```bash
 # 1. Compile PHP to Assembly
 php src/phc-new.php compile tests/test_fib_simple.php output.phas
@@ -57,6 +59,7 @@ php src/phc-new.php run output.phc
 ```
 
 ### Build (Compile + Assemble)
+
 ```bash
 php src/phc-new.php build tests/test_fib_simple.php
 ```
@@ -64,7 +67,9 @@ php src/phc-new.php build tests/test_fib_simple.php
 ## ✨ What's Fixed
 
 ### 1. **Recursive Function Calls with Complex Arguments** ✅
+
 The original compiler had issues with expressions like:
+
 ```php
 return fib($n - 1) + fib($n - 2);  // Now works!
 ```
@@ -72,16 +77,19 @@ return fib($n - 1) + fib($n - 2);  // Now works!
 **Fixed by**: Proper recursive descent parser in `ExpressionParser.php` that correctly handles operator precedence and nested function calls.
 
 ### 2. **Modular Architecture** ✅
+
 - Split monolithic 1000+ line files into focused, single-responsibility modules
 - Easier to understand, test, and extend
 - Clear separation of concerns
 
 ### 3. **Better Error Handling** ✅
+
 - More descriptive error messages
 - Stack traces in verbose mode
 - Better validation throughout
 
 ### 4. **Code Organization** ✅
+
 - Logical grouping by functionality
 - Reusable components
 - Clear interfaces between modules
@@ -89,23 +97,27 @@ return fib($n - 1) + fib($n - 2);  // Now works!
 ## 📦 Features Supported
 
 ✅ **Control Flow**
+
 - if/elseif/else statements
 - while loops
 - for loops
 
 ✅ **Data Types**
+
 - Integers and floats
 - Strings
 - Arrays (indexed and associative)
 - Nested arrays
 
 ✅ **Operations**
+
 - Arithmetic: +, -, *, /, %
 - Comparison: <, >, <=, >=, ==, !=
 - String concatenation: .
 - Array access: $arr[key]
 
 ✅ **Functions**
+
 - User-defined functions with parameters
 - Return values
 - Recursive functions
@@ -113,6 +125,7 @@ return fib($n - 1) + fib($n - 2);  // Now works!
 - 58 built-in PHP functions
 
 ✅ **Built-in Functions** (Partial List)
+
 - String: strlen, trim, substr, strpos, explode, implode
 - Array: count, array_keys, array_values, array_push, array_pop
 - Math: abs, round, floor, ceil, min, max
@@ -123,6 +136,7 @@ return fib($n - 1) + fib($n - 2);  // Now works!
 ## 🧪 Testing
 
 ### Run All Examples
+
 ```bash
 cd examples
 php ../src/phc-new.php exec 01_hello_world.php
@@ -131,6 +145,7 @@ php ../src/phc-new.php exec 02_arithmetic.php
 ```
 
 ### Run Specific Tests
+
 ```bash
 cd tests
 php ../src/phc-new.php exec test_fib_simple.php        # Fibonacci (recursive)
@@ -139,7 +154,9 @@ php ../src/phc-new.php exec test_all_features.php       # Comprehensive test
 ```
 
 ### Test with Previously Broken Cases
+
 These now work correctly:
+
 ```bash
 php ../src/phc-new.php exec test_fib_simple.php
 php ../src/phc-new.php exec test_same_func_twice.php
@@ -158,6 +175,7 @@ php ../src/phc-new.php exec test_two_calls_with_args.php
 5. **Execution**: Stack-based virtual machine
 
 ### Memory Layout
+
 ```
 0-19:   Superglobals ($_GET, $_POST, etc.)
 20-99:  Reserved for future use
@@ -166,12 +184,15 @@ php ../src/phc-new.php exec test_two_calls_with_args.php
 ```
 
 ### Stack Operations
+
 The VM uses a stack-based architecture:
+
 - Function arguments pushed right-to-left
 - Return values left on stack
 - Arithmetic operations pop operands, push result
 
 ### Function Calling Convention
+
 1. Push arguments onto stack (left to right)
 2. CALL jumps to function label
 3. Function pops arguments into memory
@@ -181,6 +202,7 @@ The VM uses a stack-based architecture:
 ## 📝 Example: Fibonacci
 
 **Input (test_fib_simple.php)**:
+
 ```php
 <?php
 function fib($n) {
@@ -193,6 +215,7 @@ echo fib(5);
 ```
 
 **Compiled Assembly** (simplified):
+
 ```
 JMP main
 func_fib0:
@@ -248,6 +271,7 @@ MIT License - Feel free to use and modify!
 ## 🤝 Contributing
 
 This is a learning project. Feel free to:
+
 - Report bugs
 - Suggest features
 - Submit improvements

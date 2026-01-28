@@ -21,6 +21,14 @@ class FunctionCompiler {
         return $this->userFunctions;
     }
 
+    public function setUserFunctions($functions) {
+        $this->userFunctions = $functions;
+    }
+
+    public function setStatementCompiler($statementCompiler) {
+        $this->statementCompiler = $statementCompiler;
+    }
+
     public function collectFunctionDefinitions($code) {
         if (preg_match_all('/function\s+(\w+)\s*\(\s*(.*?)\s*\)\s*\{/s', $code, $matches, PREG_OFFSET_CAPTURE)) {
             foreach ($matches[1] as $idx => $nameMatch) {
@@ -115,7 +123,8 @@ class FunctionCompiler {
         $this->statementCompiler->parseStatements($this->tokensToCode($body));
         
         // Add implicit return if needed
-        $lastAssembly = end($this->emitter->getAssemblyLines());
+        $assemblyLines = $this->emitter->getAssemblyLines();
+        $lastAssembly = !empty($assemblyLines) ? end($assemblyLines) : '';
         if (strpos($lastAssembly, 'RET') === false) {
             $this->emitter->emit('PUSH', '0');
             $this->emitter->emit('RET');

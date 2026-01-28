@@ -81,7 +81,51 @@ The parser incorrectly handles the expression `fib($n - 1) + fib($n - 2)` when b
 
 These tests are included to demonstrate the limitation but will not produce correct results.
 
-## Compiling and Running Tests
+## New Testing Workflow (Easier!)
+
+### Quick Test Validation
+
+The new test suite automatically compares PHP native output vs PHC compiled output:
+
+```bash
+# Run all tests
+php run_all_tests.php
+
+# Validate a specific test
+php validate_test.php test_fib_simple.php
+
+# Add a new test
+php add_test.php my_feature "Test description"
+```
+
+### How It Works
+
+1. **Runs your test with native PHP** - Gets the expected output
+2. **Compiles and runs with PHC** - Gets the actual output  
+3. **Compares outputs** - Test passes if they're identical
+4. **Shows differences** - If they differ, shows a clear diff
+
+### Adding New Tests
+
+```bash
+# 1. Create a new test
+php add_test.php string_functions
+
+# 2. Edit the test file
+# Add your PHP code to test_string_functions.php
+
+# 3. Validate it works
+php validate_test.php test_string_functions.php
+
+# 4. Run all tests to ensure no regressions
+php run_all_tests.php
+```
+
+Your test passes when the PHC output exactly matches PHP output!
+
+## Old Testing Workflow (Manual)
+
+### Compiling and Running Tests
 
 ### Compile a test to assembly
 

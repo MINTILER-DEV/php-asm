@@ -29,73 +29,46 @@ class PHPCompiler {
         // Remove <?php tags
         $phpCode = preg_replace('/<\?php|\?>/', '', $phpCode);
         
-        // Initialize function compiler first
+        // Create FunctionCompiler first (will hold null statement compiler initially)
         $this->functionCompiler = new FunctionCompiler(
             $this->emitter,
-            null,  // Will be set after statement compiler is created
+            null,  // StatementCompiler not created yet
             $this->variableResolver
         );
         
-        // Collect function definitions
+        // Collect function definitions (this assigns labels)
         $this->functionCompiler->collectFunctionDefinitions($phpCode);
         $userFunctions = $this->functionCompiler->getUserFunctions();
         
-        // Initialize expression parser
+        // Create expression parser with the collected functions
         $this->expressionParser = new ExpressionParser(
             $this->emitter,
             $this->variableResolver,
             $userFunctions
         );
         
-        // Initialize array compiler
+        // Create array compiler
         $this->arrayCompiler = new ArrayCompiler(
             $this->emitter,
             $this->expressionParser,
             $this->variableResolver
         );
         
-        // Initialize statement compiler
+        // Create statement compiler
         $this->statementCompiler = new StatementCompiler(
             $this->emitter,
             $this->expressionParser,
             $this->variableResolver,
             $this->arrayCompiler
         );
+        
+        // NOW update the function compiler with the statement compiler
+        $this->functionCompiler->setStatementCompiler($this->statementCompiler);
         
         // Set circular dependency
-        $this->functionCompiler = new FunctionCompiler(
-            $this->emitter,
-            $this->statementCompiler,
-            $this->variableResolver
-        );
-        $this->functionCompiler->collectFunctionDefinitions($phpCode);
         $this->statementCompiler->setFunctionCompiler($this->functionCompiler);
         
-        // Update expression parser with correct user functions
-        $userFunctions = $this->functionCompiler->getUserFunctions();
-        $this->expressionParser = new ExpressionParser(
-            $this->emitter,
-            $this->variableResolver,
-            $userFunctions
-        );
-        
-        // Re-create array compiler with updated expression parser
-        $this->arrayCompiler = new ArrayCompiler(
-            $this->emitter,
-            $this->expressionParser,
-            $this->variableResolver
-        );
-        
-        // Re-create statement compiler with updated components
-        $this->statementCompiler = new StatementCompiler(
-            $this->emitter,
-            $this->expressionParser,
-            $this->variableResolver,
-            $this->arrayCompiler
-        );
-        $this->statementCompiler->setFunctionCompiler($this->functionCompiler);
-        
-        // If there are functions, emit jump to skip them
+        // Generate code
         if (!empty($userFunctions)) {
             $mainLabel = $this->emitter->getLabel('main');
             $this->emitter->emit('JMP', $mainLabel);
@@ -107,7 +80,7 @@ class PHPCompiler {
             $this->emitter->emitLabel($mainLabel);
         }
         
-        // Compile main code (without function definitions)
+        // Compile main code
         $this->compileMainCode($phpCode);
         
         // Add HALT
@@ -124,7 +97,7 @@ class PHPCompiler {
 }
 
 // CLI Interface
-if (php_sapi_name() === 'cli' && realpath($_SERVER['SCRIPT_FILENAME']) === realpath(__FILE__)) {
+if (php_sapi_name() === 'cli' && basename(__FILE__) === basename($_SERVER['PHP_SELF'])) {
     if ($argc < 2) {
         echo "PHP to PHC Compiler\n";
         echo "Usage: php compiler.php <input.php> [output.phas]\n";
