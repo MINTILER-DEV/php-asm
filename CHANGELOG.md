@@ -3,10 +3,20 @@
 ## [1.0.2] - 2025-01-24
 
 ### Fixed
+
 - Fixed label mismatch in recursive function calls
   - Function labels were being generated twice due to creating multiple FunctionCompiler instances
   - Now creates single FunctionCompiler instance and updates its StatementCompiler reference
   - This ensures consistent label generation (e.g., `func_fib0` used everywhere instead of mixing `func_fib0` and `func_fib1`)
+
+### Known Limitations
+
+- Recursive functions with parameter access after recursive calls produce incorrect results
+  - This occurs because parameters are stored in fixed memory locations that get overwritten by recursive calls
+  - Example: `return fib($n - 1) + fib($n - 2)` - after first recursive call, `$n` has been overwritten
+  - Workaround: Save parameters to local variables before recursive calls
+  - Proper fix requires implementing stack frames (planned for future release)
+  - See tests/README.md for details
 
 ## [1.0.1] - 2025-01-24
 

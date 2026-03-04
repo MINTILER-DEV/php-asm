@@ -1,0 +1,42 @@
+JMP main4
+func_greet0:
+PUSHC "Hello"
+PRINT
+PUSH 0
+RET
+func_add1:
+STORE 100
+STORE 101
+LOAD 101
+LOAD 100
+ADD
+RET
+func_multiply2:
+STORE 102
+STORE 103
+LOAD 103
+LOAD 102
+MUL
+RET
+func_divide3:
+STORE 100
+STORE 101
+LOAD 101
+LOAD 100
+DIV
+RET
+main4:
+CALL func_greet0
+PUSH 5
+PUSH 3
+CALL func_add1
+PRINT
+PUSH 6
+PUSH 7
+CALL func_multiply2
+PRINT
+PUSH 20
+PUSH 4
+CALL func_divide3
+PRINT
+HALT

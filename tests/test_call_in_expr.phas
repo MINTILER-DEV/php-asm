@@ -1,0 +1,13 @@
+JMP main2
+func_get_value0:
+PUSH 5
+RET
+func_add_and_call1:
+CALL func_get_value0
+PUSH 3
+ADD
+RET
+main2:
+CALL func_add_and_call1
+PRINT
+HALT

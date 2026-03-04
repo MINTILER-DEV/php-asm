@@ -1,0 +1,9 @@
+JMP main1
+func_greet0:
+PUSHC "Hello from function!"
+PRINT
+PUSH 0
+RET
+main1:
+CALL func_greet0
+HALT
