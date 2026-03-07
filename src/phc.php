@@ -8,6 +8,7 @@
 require_once __DIR__ . '/PHPCompiler.php';
 require_once __DIR__ . '/Assembler/PHCAssembler.php';
 require_once __DIR__ . '/VM/PHCVM.php';
+require_once __DIR__ . '/VM/StandaloneVMExporter.php';
 require_once __DIR__ . '/MemoryLayout.php';
 
 if (php_sapi_name() !== 'cli') {
@@ -21,6 +22,7 @@ function showHelp() {
     echo "  php phc.php compile <input.php> [output.phas]    Compile PHP to assembly\n";
     echo "  php phc.php assemble <input.phas> [output.phc]   Assemble to bytecode\n";
     echo "  php phc.php run <file.phc>                       Run bytecode\n";
+    echo "  php phc.php vm <file.phc> [output.php]           Build standalone VM runner\n";
     echo "  php phc.php build <input.php>                    Compile & assemble\n";
     echo "  php phc.php exec <input.php>                     Compile, assemble & run\n";
     echo "\n";
@@ -31,6 +33,7 @@ function showHelp() {
     echo "  php phc.php compile test.php test.phas\n";
     echo "  php phc.php assemble test.phas test.phc\n";
     echo "  php phc.php run test.phc\n";
+    echo "  php phc.php vm test.phc test_vm.php\n";
     echo "  php phc.php exec test.php    # Compile, assemble, and run in one step\n";
     exit(0);
 }
@@ -100,6 +103,36 @@ try {
             if ($verbose) echo "Running $file...\n";
             $vm->run();
             if ($verbose) echo "\nExecution complete.\n";
+            break;
+
+        case 'vm':
+            if ($argc < 3) {
+                echo "Error: Bytecode file required\n";
+                exit(1);
+            }
+            $input = $argv[2];
+            $candidateOutput = $argv[3] ?? null;
+            if ($candidateOutput !== null && strpos($candidateOutput, '-') === 0) {
+                $candidateOutput = null;
+            }
+
+            if ($candidateOutput !== null) {
+                $output = $candidateOutput;
+            } else {
+                $output = preg_replace('/\.phc$/i', '.vm.php', $input);
+                if ($output === null || $output === $input) {
+                    $output = $input . '.vm.php';
+                }
+            }
+
+            if (!file_exists($input)) {
+                echo "Error: Bytecode file not found: $input\n";
+                exit(1);
+            }
+
+            $exporter = new StandaloneVMExporter();
+            $exporter->export($input, $output);
+            echo "Generated standalone VM runner: $output\n";
             break;
 
         case 'build':
