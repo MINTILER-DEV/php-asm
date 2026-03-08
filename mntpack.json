@@ -1,6 +1,5 @@
 {
   "name": "php-asm",
   "version": "1.0.2",
-  "build": "echo mntpack: php-asm launcher ready",
-  "bin": "mntpack/php-asm.cmd"
+  "run": "php src/phc.php"
 }
